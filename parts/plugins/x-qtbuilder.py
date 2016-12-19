@@ -67,7 +67,7 @@ class QtBuilderPlugin(make.MakePlugin):
 
     def __init__(self, name, options, project):
         super().__init__(name, options, project)
-        self.build_packages.extend(['patch', 'perl', 'wget'])
+        self.build_packages.extend(['g++', 'patch', 'perl', 'wget'])
         self.options.source_branch = self.options.qt_version
 
     def pull(self):
