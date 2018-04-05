@@ -1,5 +1,6 @@
 name: telegram-desktop
 version: git
+adopt-info: telegram
 summary: Telegram Desktop
 description: |
   Telegram is a popular messaging protocol with encryption and security as
@@ -34,6 +35,7 @@ version-script: |
 apps:
   telegram-desktop:
     command: telegram-launch
+    common-id: org.telegram.desktop
     environment:
       DISABLE_WAYLAND: 1
       WAYLAND_DISPLAY: no-display
@@ -56,6 +58,7 @@ parts:
     plugin: gyp-cmake
     source: https://github.com/telegramdesktop/tdesktop.git
     source-depth: 1
+    parse-info: [lib/xdg/telegramdesktop.appdata.xml]
     prepare: |
       patches_dir=$SNAPCRAFT_STAGE/../patches
       git -C ../src apply -v3 $patches_dir/telegram-debug-customizable-working-dir.patch || true
