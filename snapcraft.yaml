@@ -25,6 +25,7 @@ version-script: |
     version="$version-beta"
   fi
 
+  git pull --tags
   version="${version}$(git describe --tags | sed 's,^v[^-]\+,,')"
 
   echo $version
