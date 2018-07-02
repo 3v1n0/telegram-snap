@@ -57,7 +57,8 @@ parts:
     source: https://github.com/telegramdesktop/tdesktop.git
     source-depth: 1
     parse-info: [lib/xdg/telegramdesktop.appdata.xml]
-    prepare: |
+    override-pull: |
+      snapcraftctl pull
       patches_dir=$SNAPCRAFT_STAGE/../patches
       git -C ../src apply -v3 $patches_dir/telegram-debug-customizable-working-dir.patch || true
       git -C ../src apply -v3 $patches_dir/telegram-disable-werror.patch || true
@@ -97,7 +98,8 @@ parts:
                         TDESKTOP_DISABLE_REGISTER_CUSTOM_SCHEME,
                         TDESKTOP_DISABLE_DESKTOP_FILE_GENERATION
       - --depth=.
-    install: |
+    override-build: |
+      snapcraftctl build
       snap_gui=$SNAPCRAFT_STAGE/../snap/gui
       mkdir -vp $snap_gui
       cp -v lib/xdg/telegramdesktop.desktop $snap_gui
@@ -132,8 +134,9 @@ parts:
 
   desktop-gtk3:
     stage: [-./usr/share/fonts/**]
-    install: |
+    override-build: |
       set -x
+      snapcraftctl build
       export XDG_DATA_DIRS=$SNAPCRAFT_PART_INSTALL/usr/share
       update-mime-database $SNAPCRAFT_PART_INSTALL/usr/share/mime
 
@@ -377,7 +380,8 @@ parts:
     source: https://github.com/ericniebler/range-v3.git
     source-depth: 1
     plugin: nil
-    install: |
+    override-build: |
+      snapcraftctl build
       mkdir $SNAPCRAFT_PART_INSTALL/range-v3
       cp -rv * $SNAPCRAFT_PART_INSTALL/range-v3
     prime: [-./*]
@@ -397,15 +401,17 @@ parts:
     build-packages:
       - libmpc-dev
       - libcloog-ppl-dev
-    prepare: |
+    override-pull: |
       echo "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu xenial main" | \
             sudo tee /etc/apt/sources.list.d/ubuntu-toolchain-r.list
       sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 60C317803A41BA51845E371A1E9377A2BA9EF27F
       sudo apt-get update \
         -o Dir::Etc::sourcelist="sources.list.d/ubuntu-toolchain-r.list" \
         -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
-    install: |
+      snapcraftctl pull
+    override-build: |
       sudo apt install gcc-7 g++-7 -o Debug::pkgProblemResolver=yes --no-install-recommends -y
       sudo apt-mark auto gcc-7 g++-7
       sudo rm -f /etc/apt/sources.list.d/ubuntu-toolchain-r.list
+      snapcraftctl build
     prime: [-./*]
