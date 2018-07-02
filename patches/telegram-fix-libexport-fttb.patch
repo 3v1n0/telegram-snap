@@ -1,0 +1,25 @@
+commit 23a3aac78510b999a6abf24f481f23dfc5ccd867
+Author: Marco Trevisan (Treviño) <mail@3v1n0.net>
+Date:   Tue Jul 3 00:39:35 2018 +0200
+
+    lib_export: use includes paths as defined per platform
+
+diff --git a/Telegram/gyp/lib_export.gyp b/Telegram/gyp/lib_export.gyp
+index 0d368e2e7..2d1ac6c56 100644
+--- a/Telegram/gyp/lib_export.gyp
++++ b/Telegram/gyp/lib_export.gyp
+@@ -14,10 +14,14 @@
+     'includes': [
+       'common.gypi',
+       'qt.gypi',
++      'telegram_win.gypi',
++      'telegram_mac.gypi',
++      'telegram_linux.gypi',
+       'pch.gypi',
+     ],
+     'variables': {
+       'src_loc': '../SourceFiles',
++      'res_loc': '../Resources',
+       'libs_loc': '../../../Libraries',
+       'official_build_target%': '',
+       'submodules_loc': '../ThirdParty',
