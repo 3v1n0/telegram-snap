@@ -1,7 +1,7 @@
 name: telegram-desktop
 version: git
 adopt-info: telegram
-summary: Telegram Desktop
+summary: Unofficial snap for Official Telegram Desktop client
 description: |
   Telegram is a popular messaging protocol with encryption and security as
   its key focus.
